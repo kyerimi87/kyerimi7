@@ -1,0 +1,139 @@
+@prefix jcg:    <https://your-school-domain.example/vocab/lesson#> .
+@prefix ex:     <https://your-school-domain.example/id/> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix schema: <https://schema.org/> .
+@prefix hydra:  <http://www.w3.org/ns/hydra/core#> .
+
+# Videos (1순위)
+ex:video/kimyoungha_booktalk a schema:VideoObject ; schema:name "[북토크 편집본] 여행의 이유 / 김영하"@ko ; schema:inLanguage "ko" ;
+  schema:url <https://www.youtube.com/watch?v=XHSXqivr51k> .
+ex:video/ebs_worldtheme_playlist a schema:VideoObject ; schema:name "FULL VOD EBS 세계테마기행 모아보기(공식)"@ko ; schema:inLanguage "ko" ;
+  schema:url <https://www.youtube.com/playlist?list=PLvNzObWMMx6s3Vxm4dkJX7ZzJJJeyCMaZ> .
+ex:video/ebs_koreatravelogue_playlist a schema:VideoObject ; schema:name "FULL VOD EBS 한국기행 모아보기(공식)"@ko ; schema:inLanguage "ko" ;
+  schema:url <https://www.youtube.com/playlist?list=PLvNzObWMMx6u_SjJ1ajBfGqztk6SG078c> .
+ex:video/kbs_travel_channel a schema:VideoObject ; schema:name "KBS 트래블-걸어서 세계속으로(공식 채널)"@ko ; schema:inLanguage "ko" ;
+  schema:url <https://www.youtube.com/channel/UCFw4M1BJYYdN1YtS8SzlDzg> .
+ex:video/panibottle_channel a schema:VideoObject ; schema:name "빠니보틀 Pani Bottle(공식 채널)"@ko ; schema:inLanguage "ko" ;
+  schema:url <https://www.youtube.com/@PaniBottle> .
+
+# PDF (상대경로)
+ex:res/pdf-lesson2-worksheet
+  a schema:DigitalDocument ;
+  schema:name "2차시 활동지｜나를 위한 여행 설계서"@ko ;
+  schema:encodingFormat "application/pdf" ;
+  schema:url </assets/pdf/여행에서_만난_나_활동지.pdf> .
+
+# HTTP
+ex:http/yeoha-01-lesson2
+  a jcg:HttpBlueprint ;
+  hydra:entrypoint <https://your-school-domain.example/> ;
+  jcg:endpoint
+    ex:asset/get-pdf-lesson2-worksheet,
+    ex:api/post-response,
+    ex:api/post-poll-vote,
+    ex:api/post-peer-feedback .
+
+ex:asset/get-pdf-lesson2-worksheet a hydra:Operation ;
+  hydra:method "GET" ; hydra:returns "application/pdf" ;
+  hydra:uriTemplate "/assets/pdf/여행에서_만난_나_활동지.pdf" .
+
+ex:api/post-response a hydra:Operation ;
+  hydra:method "POST" ; hydra:expects "application/json" ; hydra:returns "application/json" ;
+  hydra:uriTemplate "/api/lessons/yeoha-01-lesson2/responses" .
+
+ex:api/post-poll-vote a hydra:Operation ;
+  hydra:method "POST" ; hydra:expects "application/json" ; hydra:returns "application/json" ;
+  hydra:uriTemplate "/api/polls/lesson2-mood/vote" .
+
+ex:api/post-peer-feedback a hydra:Operation ;
+  hydra:method "POST" ; hydra:expects "application/json" ; hydra:returns "application/json" ;
+  hydra:uriTemplate "/api/feedback/lesson2/peer" .
+
+# Lesson 2
+ex:lesson/yeoha-01-lesson2
+  a jcg:Lesson ;
+  schema:name "나는 왜 이 여행을 떠나고 싶을까?"@ko ;
+  schema:educationalLevel "고2"@ko ;
+  schema:timeRequired "PT50M" ;
+  dct:description "1차시의 여행 의미를 바탕으로, 나의 현재와 연결된 여행 목적·동기를 정리한다."@ko ;
+  jcg:coreQuestion "나는 왜 이 여행을 떠나고 싶을까?"@ko ;
+  jcg:standardCode "11여우-01-01" ;
+  jcg:learningGoal
+    "나의 현재 상태(감정·생활·관계)를 언어로 정리할 수 있다."@ko ,
+    "여행의 목적(Why)과 기대 변화(Then)를 구체화할 수 있다."@ko ,
+    "여행 계획 키워드 1~2개를 도출할 수 있다."@ko ;
+  jcg:hasHttpBlueprint ex:http/yeoha-01-lesson2 ;
+  jcg:hasResource ex:res/pdf-lesson2-worksheet,
+                  ex:video/kimyoungha_booktalk, ex:video/ebs_worldtheme_playlist,
+                  ex:video/ebs_koreatravelogue_playlist, ex:video/kbs_travel_channel,
+                  ex:video/panibottle_channel ;
+  jcg:hasStep
+    ex:step/lesson2-01, ex:step/lesson2-02, ex:step/lesson2-03,
+    ex:step/lesson2-04, ex:step/lesson2-05, ex:step/lesson2-06,
+    ex:step/lesson2-07, ex:step/lesson2-08, ex:step/lesson2-09 .
+
+# Steps
+ex:step/lesson2-01 a jcg:GagneStep ; jcg:order 1 ; schema:name "지금 내 마음은 어디쯤일까?"@ko ;
+  schema:timeRequired "PT5M" ;
+  jcg:resource ex:video/ebs_koreatravelogue_playlist ;
+  jcg:hasActivity ex:activity/lesson2-mood-poll .
+
+ex:activity/lesson2-mood-poll a schema:Question ;
+  schema:name "마음 상태 투표"@ko ;
+  schema:text "요즘 내 마음에 가장 가까운 단어는?"@ko ;
+  schema:answerOption "지침"@ko,"불안"@ko,"설렘"@ko,"답답함"@ko,"무기력"@ko,"기대"@ko ;
+  jcg:submitOperation ex:api/post-poll-vote .
+
+ex:step/lesson2-02 a jcg:GagneStep ; jcg:order 2 ; schema:name "오늘은 ‘여행의 이유’를 내 말로 정리해볼까?"@ko ;
+  schema:timeRequired "PT2M" .
+
+ex:step/lesson2-03 a jcg:GagneStep ; jcg:order 3 ; schema:name "1차시를 10초 만에 다시 떠올리자"@ko ;
+  schema:timeRequired "PT5M" ;
+  jcg:hasActivity ex:activity/lesson2-recall-l1 .
+
+ex:activity/lesson2-recall-l1 a schema:AssessAction ;
+  schema:name "1차시 한 문장 회상"@ko ;
+  jcg:submitOperation ex:api/post-response ;
+  jcg:fieldId "l1_oneSentence" .
+
+ex:step/lesson2-04 a jcg:GagneStep ; jcg:order 4 ; schema:name "다른 사람은 왜 떠날까?"@ko ;
+  schema:timeRequired "PT8M" ;
+  jcg:resource ex:video/kimyoungha_booktalk, ex:video/ebs_worldtheme_playlist .
+
+ex:step/lesson2-05 a jcg:GagneStep ; jcg:order 5 ; schema:name "이제 ‘나를 위한 여행 설계서’로!"@ko ;
+  schema:timeRequired "PT5M" ;
+  jcg:resource ex:res/pdf-lesson2-worksheet .
+
+ex:step/lesson2-06 a jcg:GagneStep ; jcg:order 6 ; schema:name "나의 여행 목적을 확실히 적어보자"@ko ;
+  schema:timeRequired "PT15M" ;
+  jcg:hasActivity ex:activity/lesson2-design-form .
+
+ex:activity/lesson2-design-form a schema:CreateAction ;
+  schema:name "디지털 활동지｜나를 위한 여행 설계서"@ko ;
+  jcg:submitOperation ex:api/post-response ;
+  jcg:fieldId "currentState","why","purpose","thenChange","keywords" .
+
+ex:step/lesson2-07 a jcg:GagneStep ; jcg:order 7 ; schema:name "내 계획, 친구가 보면 어떻게 느낄까?"@ko ;
+  schema:timeRequired "PT5M" ;
+  jcg:hasActivity ex:activity/lesson2-peer-fb .
+
+ex:activity/lesson2-peer-fb a schema:CommunicateAction ;
+  schema:name "짝 피드백(2차시)"@ko ;
+  jcg:submitOperation ex:api/post-peer-feedback ;
+  jcg:fieldId "peerName","fb_good","fb_next" .
+
+ex:step/lesson2-08 a jcg:GagneStep ; jcg:order 8 ; schema:name "내 여행 목적, 잘 잡혔나 점검!"@ko ;
+  schema:timeRequired "PT3M" .
+
+ex:step/lesson2-09 a jcg:GagneStep ; jcg:order 9 ; schema:name "내 목적을 ‘한 줄’로 저장하자"@ko ;
+  schema:timeRequired "PT2M" ;
+  jcg:resource ex:video/kbs_travel_channel, ex:video/panibottle_channel ;
+  jcg:hasActivity ex:activity/lesson2-exit .
+
+ex:activity/lesson2-exit a schema:AssessAction ;
+  schema:name "2차시 한 줄 목적"@ko ;
+  jcg:submitOperation ex:api/post-response ;
+  jcg:fieldId "oneLinePurpose" .

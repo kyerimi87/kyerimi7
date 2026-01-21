@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>유럽 여행 탐험 - 여행과 우리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', system-ui, sans-serif;
+      background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1600&q=80') center/cover;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      position: relative;
+      padding-bottom: 40px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      border-radius: 999px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+      z-index: 100;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateX(-5px);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: -60px auto 60px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-box {
+      background: white;
+      padding: 25px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      margin-bottom: 40px;
+      display: flex;
+    }
+
+    input {
+      flex: 1;
+      padding: 16px 24px;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      font-size: 18px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #f1f5f9;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #0f172a;
+      line-height: 1.3;
+    }
+
+    .place-info {
+      font-size: 0.9rem;
+      color: #4f46e5;
+      font-weight: 700;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 11px;
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      text-align: center;
+      transition: 0.3s;
+      margin-top: auto;
+    }
+
+    .btn:hover {
+      background: #4338ca;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hero">
+    <a href="world_map.html" class="back-btn">← 지도로 돌아가기</a>
+    <h1>유럽 여행 탐험</h1>
+    <p>역사와 예술의 낭만이 흐르는 도시들</p>
+  </div>
+  <main>
+    <div class="search-box"><input id="q" type="search" placeholder="보고 싶은 나라나 도시를 검색해 보세요..." /></div>
+    <div id="grid" class="grid"></div>
+  </main>
+  <script>
+    const items = [
+      { query: "Paris Travel Guide official 4k", title: "Paris Travel Guide 🇫🇷 (파리 여행 가이드)", place: "프랑스·파리", tags: ["에펠탑", "예술", "미식"] },
+      { query: "London Travel Guide official 4k", title: "London Travel Guide 🇬🇧 (런던 여행 가이드)", place: "영국·런던", tags: ["빅벤", "전통", "쇼핑"] },
+      { query: "Rome Travel Guide official 4k", title: "Rome Travel Guide 🇮🇹 (로마 여행 가이드)", place: "이탈리아·로마", tags: ["역사", "콜로세움", "유적"] },
+      { query: "Venice Travel Guide official 4k", title: "Venice Travel Guide 🇮🇹 (베네치아 가이드)", place: "이탈리아·베네치아", tags: ["운하", "낭만", "물"] },
+      { query: "Barcelona Travel Guide official 4k", title: "Barcelona Travel Guide 🇪🇸 (바르셀로나 가이드)", place: "스페인·바르셀로나", tags: ["가우디", "해변", "예술"] },
+      { query: "Prague Travel Guide official 4k", title: "Prague Travel Guide 🇨🇿 (프라하 가이드)", place: "체코·프라하", tags: ["야경", "중세", "낭만"] },
+      { query: "Swiss Alps Vacation Travel Guide official", title: "Swiss Alps Guide 🇨🇭 (스위스 알프스 가이드)", place: "스위스·알프스", tags: ["자연", "만년설", "힐링"] },
+      { query: "Athens Travel Guide official 4k", title: "Athens Travel Guide 🇬🇷 (아테네 가이드)", place: "그리스·아테네", tags: ["신화", "역사", "유적"] }
+    ];
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+    function escapeHtml(str) { return String(str ?? "").replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])); }
+    function render() {
+      const query = q.value.toLowerCase();
+      const filtered = items.filter(it => `${it.title} ${it.place} ${it.tags.join(" ")}`.toLowerCase().includes(query));
+      grid.innerHTML = filtered.map(it => `
+                <div class="card">
+                    <div class="place-info">📍 ${escapeHtml(it.place)}</div>
+                    <h2 class="title">${escapeHtml(it.title)}</h2>
+                    <div class="tags">${it.tags.map(t => `<span class="tag">#${escapeHtml(t)}</span>`).join("")}</div>
+                    <a class="btn" href="https://www.youtube.com/results?search_query=${encodeURIComponent(it.query)}" target="_blank" rel="noopener">유튜브에서 보기</a>
+                </div>
+            `).join("");
+    }
+    q.addEventListener("input", render);
+    render();
+  </script>
+</body>
+
+</html>

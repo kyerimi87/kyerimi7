@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>종합 여행 채널 - 여행과 우리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --bg: #f8fafc;
+      --glass: rgba(255, 255, 255, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', system-ui, sans-serif;
+      background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80') center/cover;
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 10px 22px;
+      border-radius: 999px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+      z-index: 100;
+    }
+
+    .back-btn:hover {
+      background: white;
+      transform: translateX(-5px);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: -40px auto 60px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #f1f5f9;
+    }
+
+    .card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 30px 60px -12px rgba(79, 70, 229, 0.15);
+    }
+
+    .card-type {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #4338ca;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .back-btn {
+        top: 20px;
+        left: 20px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hero">
+    <a href="kore_holl_choice.html" class="back-btn">← 이전으로</a>
+    <h1>종합 여행 채널</h1>
+    <p>세계 테마 기행부터 전문 여행가의 브이로그까지</p>
+  </div>
+
+  <main>
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <script>
+    const items = [
+      { id: "vid01", title: "[EBS] 세계테마기행", creator: "EBS Documentary", subject: "여행; 세계문화; 다큐", type: "Playlist", url: "https://www.youtube.com/playlist?list=PLvNzObWMMx6vo3PlgF1y42VTUoO6ihSuW" },
+      { id: "vid04", title: "KBS 걸어서 세계속으로", creator: "KBS", subject: "여행; 세계여행; 다큐", type: "Channel", url: "https://www.youtube.com/channel/UCFw4M1BJYYdN1YtS8SzlDzg" },
+      { id: "vid05", title: "VISITKOREA 공식 채널", creator: "VISITKOREA", subject: "여행; 한국여행; 관광정보", type: "Channel", url: "https://www.youtube.com/@visitkorea" },
+      { id: "vid10", title: "Imagine Your Korea", creator: "한국관광공사", subject: "여행; 한국여행; 캠페인", type: "Channel", url: "https://www.youtube.com/@imagineyourkorea" },
+      { id: "vid15", title: "VisitSeoul TV", creator: "서울관광재단", subject: "여행; 서울여행; 관광팁", type: "Channel", url: "https://www.youtube.com/c/VisitSeoulTV" },
+      { id: "vid18", title: "빠니보틀 Pani Bottle", creator: "빠니보틀", subject: "여행; 세계여행; 브이로그", type: "Channel", url: "https://www.youtube.com/@PaniBottle" },
+      { id: "vid19", title: "곽튜브", creator: "곽튜브", subject: "여행; 세계여행; 브이로그", type: "Channel", url: "https://www.youtube.com/@JBKWAK" },
+      { id: "vid20", title: "체코제", creator: "체코제", subject: "여행; 세계여행; 브이로그", type: "Channel", url: "https://www.youtube.com/@Chae_ko_je" }
+    ];
+
+    const grid = document.getElementById("grid");
+
+    grid.innerHTML = items.map(it => `
+            <div class="card">
+                <span class="card-type">${it.type}</span>
+                <h2 class="title">${it.title}</h2>
+                <p class="desc">${it.subject}</p>
+                <a class="btn" href="${it.url}" target="_blank" rel="noopener">채널 바로가기</a>
+            </div>
+        `).join("");
+  </script>
+</body>
+
+</html>

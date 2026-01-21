@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여행과 우리 - 영상 학습 센터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --secondary-light: #34d399;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--text);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        p.subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            width: 100%;
+            max-width: 1000px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .menu-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+            z-index: 0;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
+            border-color: var(--primary-light);
+        }
+
+        .icon-wrapper {
+            width: 100px;
+            height: 100px;
+            background: var(--white);
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .icon-wrapper svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--primary);
+        }
+
+        .menu-card.secondary .icon-wrapper svg {
+            fill: var(--secondary);
+        }
+
+        .menu-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-desc {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .arrow {
+            margin-top: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+            transition: gap 0.3s ease;
+        }
+
+        .menu-card:hover .arrow {
+            gap: 1rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>여행과 우리</h1>
+        <p class="subtitle">고등학교 2학년 지리 및 여행 영상 학습 센터</p>
+    </header>
+
+    <div class="menu-container">
+        <!-- Menu 1: Holl & Kore -->
+        <a href="kore_holl_choice.html" class="menu-card">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+            </div>
+            <h2 class="menu-title">종합 및 한국 여행</h2>
+            <p class="menu-desc">키워드 채널 소개 및 한국 여행 관련<br>필수 영상 자료들을 한 곳에서 확인하세요.</p>
+            <div class="arrow">자세히 보기 <span>→</span></div>
+        </a>
+
+        <!-- Menu 2: World Map -->
+        <a href="world_map.html" class="menu-card secondary">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z">
+                    </path>
+                </svg>
+            </div>
+            <h2 class="menu-title">세계 대륙별 여행</h2>
+            <p class="menu-desc">지도를 클릭하여 전 세계 대륙별<br>다양한 여행 영상을 탐험해 보세요.</p>
+            <div class="arrow">지도로 이동 <span>→</span></div>
+        </a>
+    </div>
+</body>
+
+</html>

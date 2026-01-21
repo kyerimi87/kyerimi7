@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영상 시청 - 여행과 우리</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text);
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 0.7rem 1.4rem;
+            border-radius: 999px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+            background: white;
+        }
+
+        .video-container {
+            background: black;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 24px;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        h1#video-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ef4444;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: 1px solid #fee2e2;
+            border-radius: 12px;
+            transition: 0.2s;
+        }
+
+        .external-link:hover {
+            background: #fef2f2;
+        }
+
+        .meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+            font-size: 1.1rem;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(79, 70, 229, 0.3);
+        }
+
+        .error-msg {
+            display: none;
+            text-align: center;
+            padding: 4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="javascript:history.back()" class="back-btn">← 목록으로 돌아가기</a>
+        </header>
+
+        <div id="player-wrapper">
+            <!-- 시각적으로 확인할 수 있는 썸네일 영역 (클릭 시 직접 열기) -->
+            <div class="video-container" id="thumb-tap" style="cursor: pointer;">
+                <img id="video-thumb" src="" style="width: 100%; height: 100%; object-fit: cover;">
+                <div
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                    <div
+                        style="width: 80px; height: 80px; background: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);">
+                        <svg width="40" height="40" fill="white" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-info">
+                <h1 id="video-title">공식 여행 가이드</h1>
+                <p id="video-desc" style="color: #64748b; margin-bottom: 25px;">선택하신 지역의 대표 영상을 유튜브에서 시청해 보세요.</p>
+
+                <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                    <a id="ext-btn" href="#" target="_blank" class="btn"
+                        style="background: #ef4444; width: 100%; max-width: 400px;">
+                        📺 유튜브에서 영상 시청하기
+                    </a>
+                    <p style="font-size: 0.85rem; color: #94a3b8;">
+                        ※ 위 버튼을 누르면 정식 유튜브 페이지로 연결됩니다. (간접 연결 방식)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 고급 설정: 한 페이지에서 보기 원하는 경우만 펼치기 -->
+        <div style="margin-top: 40px; text-align: center;">
+            <details style="color: #94a3b8; font-size: 0.85rem;">
+                <summary style="cursor: pointer;">현재 페이지에서 바로 재생해보기 (환경에 따라 제한될 수 있음)</summary>
+                <div class="video-container" style="margin-top: 15px; background: #000; border: 1px solid #e2e8f0;">
+                    <iframe id="yt-player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen style="width: 100%; height: 100%; border: none;"></iframe>
+                </div>
+            </details>
+        </div>
+
+        <div id="error-screen" class="error-msg">
+            <h2>영상을 불러올 수 없습니다.</h2>
+            <p>올바른 영상 경로가 아닙니다.</p>
+            <a href="index.html" class="back-btn" style="margin-top: 20px; display: inline-flex;">홈으로 가기</a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const vidId = urlParams.get('v');
+        const title = urlParams.get('t');
+        const desc = urlParams.get('d');
+
+        if (vidId) {
+            const ytUrl = `https://www.youtube.com/watch?v=${vidId}`;
+            const embedUrl = `https://www.youtube.com/embed/${vidId}?rel=0`;
+            const thumbUrl = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
+
+            document.getElementById('video-thumb').src = thumbUrl;
+            document.getElementById('yt-player').src = embedUrl;
+            document.getElementById('ext-btn').href = ytUrl;
+            document.getElementById('thumb-tap').onclick = () => window.open(ytUrl, '_blank');
+
+            if (title) document.getElementById('video-title').textContent = decodeURIComponent(title);
+            if (desc) document.getElementById('video-desc').textContent = decodeURIComponent(desc);
+            document.title = `${title || '영상'} - 여행과 우리`;
+        } else {
+            document.getElementById('player-wrapper').style.display = 'none';
+            document.getElementById('error-screen').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
