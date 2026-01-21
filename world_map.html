@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세계 대륙별 여행 - 여행과 우리</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #10b981;
+            --secondary-light: #34d399;
+            --text: #1e293b;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.6);
+            --continent: rgba(79, 70, 229, 0.15);
+            --continent-hover: rgba(79, 70, 229, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            /* Matches index.html gradient */
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: var(--text);
+        }
+
+        /* Subtle wave pattern to keep the sea theme */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='20' viewBox='0 0 100 20'%3E%3Cpath d='M0 10 Q25 0 50 10 T100 10' fill='none' stroke='%234f46e5' stroke-width='0.5' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.2;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        header {
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+            z-index: 100;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-link {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            text-decoration: none;
+            color: var(--primary);
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 1.6rem;
+            border-radius: 999px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            z-index: 200;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.1);
+        }
+
+        .map-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .world-svg {
+            width: 98vw;
+            height: 82vh;
+            max-width: 1600px;
+        }
+
+        .continent-group {
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .continent-path {
+            fill: var(--continent);
+            stroke: var(--primary-light);
+            stroke-width: 2;
+            stroke-dasharray: 4;
+            transition: all 0.3s;
+        }
+
+        .continent-group:hover .continent-path {
+            fill: var(--continent-hover);
+            stroke: var(--primary);
+            stroke-dasharray: 0;
+            filter: drop-shadow(0 0 15px rgba(79, 70, 229, 0.2));
+        }
+
+        /* Pill Labels instead of Banners */
+        .continent-label-bg {
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
+        }
+
+        .continent-label-text {
+            font-size: 14px;
+            font-weight: 800;
+            fill: white;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        .map-icon {
+            font-size: 34px;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+        }
+
+        .flag-img {
+            width: 42px;
+            height: 28px;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        @keyframes swim-gentle {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(2deg);
+            }
+        }
+
+        .sea-creature {
+            font-size: 50px;
+            pointer-events: none;
+            animation: swim-gentle 8s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.05));
+            opacity: 0.9;
+        }
+
+        @media (max-width: 800px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .map-icon {
+                font-size: 22px;
+            }
+
+            .sea-creature {
+                font-size: 32px;
+            }
+
+            .flag-img {
+                width: 30px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-link"><span>←</span> 처음으로</a>
+
+    <header>
+        <h1>세계 대륙별 여행 탐험</h1>
+    </header>
+
+    <div class="map-wrapper">
+        <svg viewBox="0 0 1000 600" class="world-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Sea Creatures - Around 20+ Distributed -->
+            <text x="15" y="500" class="sea-creature">🐳</text>
+            <text x="420" y="570" class="sea-creature" style="animation-delay: -5s;">🐋</text>
+            <text x="120" y="45" class="sea-creature" style="animation-delay: -2s;">🐬</text>
+            <text x="850" y="45" class="sea-creature" style="animation-delay: -7s;">🐬</text>
+            <text x="380" y="520" class="sea-creature" style="animation-delay: -4s;">🐢</text>
+            <text x="20" y="280" class="sea-creature" style="animation-delay: -10s;">🐢</text>
+            <text x="540" y="410" class="sea-creature" style="animation-delay: -1s;">🦈</text>
+            <text x="920" y="580" class="sea-creature" style="animation-delay: -8s;">🦈</text>
+            <text x="230" y="80" class="sea-creature" style="animation-delay: -3s;">🐙</text>
+            <text x="40" y="230" class="sea-creature" style="animation-delay: -12s;">🐙</text>
+            <text x="730" y="90" class="sea-creature" style="animation-delay: -6s;">🐠</text>
+            <text x="300" y="550" class="sea-creature" style="animation-delay: -15s;">🐠</text>
+            <text x="210" y="400" class="sea-creature" style="animation-delay: -9s;">🦀</text>
+            <text x="700" y="40" class="sea-creature" style="animation-delay: -18s;">🦀</text>
+            <text x="350" y="35" class="sea-creature" style="animation-delay: -11s;">🐡</text>
+            <text x="880" y="270" class="sea-creature" style="animation-delay: -14s;">🐡</text>
+            <text x="500" y="25" class="sea-creature" style="animation-delay: -16s;">🐚</text>
+            <text x="770" y="550" class="sea-creature" style="animation-delay: -19s;">🐚</text>
+            <text x="15" y="400" class="sea-creature" style="animation-delay: -13s;">🦑</text>
+            <text x="960" y="100" class="sea-creature" style="animation-delay: -20s;">🦑</text>
+            <text x="450" y="430" class="sea-creature"
+                style="animation-delay: -17s; opacity: 0.8; font-size: 55px;">🐠</text>
+            <text x="780" y="320" class="sea-creature"
+                style="animation-delay: -21s; opacity: 0.8; font-size: 55px;">🐠</text>
+            <text x="80" y="580" class="sea-creature" style="animation-delay: -22s;">🦐</text>
+            <text x="930" y="25" class="sea-creature" style="animation-delay: -23s;">🦞</text>
+
+            <!-- ASIA (Center) -->
+            <a href="asia.html">
+                <g class="continent-group">
+                    <path class="continent-path"
+                        d="M260,60 C430,50 610,60 680,110 C720,180 710,340 640,400 C560,430 400,410 310,360 C270,300 240,160 260,60 Z" />
+                    <!-- Label Pill -->
+                    <rect x="560" y="180" width="90" height="28" rx="14" fill="var(--primary)"
+                        class="continent-label-bg" />
+                    <text x="605" y="199" class="continent-label-text" text-anchor="middle">ASIA</text>
+                    <!-- Icons -->
+                    <text x="340" y="130" class="map-icon">🐼</text>
+                    <text x="440" y="110" class="map-icon">🕌</text>
+                    <text x="570" y="140" class="map-icon">🏯</text>
+                    <text x="630" y="270" class="map-icon">🐯</text>
+                    <image x="440" y="320" width="42" height="28" href="https://flagcdn.com/w80/kr.png"
+                        class="flag-img" />
+                    <image x="530" y="300" width="42" height="28" href="https://flagcdn.com/w80/jp.png"
+                        class="flag-img" />
+                    <image x="680" y="180" width="42" height="28" href="https://flagcdn.com/w80/cn.png"
+                        class="flag-img" />
+                    <text x="360" y="230" class="map-icon">🍱</text>
+                    <text x="290" y="100" class="map-icon">🐉</text>
+                    <image x="390" y="360" width="42" height="28" href="https://flagcdn.com/w80/in.png"
+                        class="flag-img" />
+                    <image x="580" y="370" width="42" height="28" href="https://flagcdn.com/w80/th.png"
+                        class="flag-img" />
+                    <text x="490" y="240" class="map-icon">🍜</text>
+                    <text x="700" y="130" class="map-icon">🌸</text>
+                    <text x="310" y="300" class="map-icon">🐘</text>
+                </g>
+            </a>
+
+            <!-- OCEANIA -->
+            <a href="oseania.html">
+                <g class="continent-group">
+                    <path class="continent-path"
+                        d="M550,430 C620,425 700,435 730,450 C750,480 740,550 700,570 C640,590 570,585 540,550 C510,510 520,460 550,420 Z" />
+                    <rect x="600" y="475" width="105" height="28" rx="14" fill="#ef4444" class="continent-label-bg" />
+                    <text x="652.5" y="494" class="continent-label-text" text-anchor="middle">OCEANIA</text>
+                    <text x="580" y="470" class="map-icon">🦘</text>
+                    <text x="670" y="480" class="map-icon">🐨</text>
+                    <image x="560" y="530" width="42" height="28" href="https://flagcdn.com/w80/au.png"
+                        class="flag-img" />
+                    <image x="700" y="520" width="42" height="28" href="https://flagcdn.com/w80/nz.png"
+                        class="flag-img" />
+                    <text x="620" y="550" class="map-icon">🏄</text>
+                </g>
+            </a>
+
+            <!-- EUROPE -->
+            <a href="erope.html">
+                <g class="continent-group">
+                    <path class="continent-path"
+                        d="M30,90 C90,70 170,65 220,80 C250,110 250,170 210,210 C160,240 90,230 60,190 C40,150 30,110 30,90 Z" />
+                    <rect x="120" y="145" width="90" height="28" rx="14" fill="var(--secondary)"
+                        class="continent-label-bg" />
+                    <text x="165" y="164" class="continent-label-text" text-anchor="middle">EUROPE</text>
+                    <text x="80" y="140" class="map-icon">🏰</text>
+                    <text x="160" y="120" class="map-icon">🗼</text>
+                    <text x="200" y="160" class="map-icon">🦊</text>
+                    <image x="60" y="110" width="42" height="28" href="https://flagcdn.com/w80/gb.png"
+                        class="flag-img" />
+                    <image x="120" y="90" width="42" height="28" href="https://flagcdn.com/w80/fr.png"
+                        class="flag-img" />
+                    <image x="170" y="80" width="42" height="28" href="https://flagcdn.com/w80/it.png"
+                        class="flag-img" />
+                    <text x="110" y="200" class="map-icon">🍕</text>
+                </g>
+            </a>
+
+            <!-- AFRICA -->
+            <a href="africa.html">
+                <g class="continent-group">
+                    <path class="continent-path"
+                        d="M50,250 C110,240 180,235 220,250 C260,290 270,410 230,530 C180,560 120,550 80,520 C40,450 30,320 50,250 Z" />
+                    <rect x="75" y="325" width="90" height="28" rx="14" fill="#f97316" class="continent-label-bg" />
+                    <text x="120" y="344" class="continent-label-text" text-anchor="middle">AFRICA</text>
+                    <text x="100" y="300" class="map-icon">🦁</text>
+                    <text x="170" y="290" class="map-icon">🦒</text>
+                    <text x="210" y="360" class="map-icon">🐘</text>
+                    <text x="180" y="470" class="map-icon">🦓</text>
+                    <image x="90" y="450" width="42" height="28" href="https://flagcdn.com/w80/eg.png"
+                        class="flag-img" />
+                    <text x="150" y="520" class="map-icon">🏜️</text>
+                    <text x="70" y="400" class="map-icon">🥁</text>
+                </g>
+            </a>
+
+            <!-- NORTH AMERICA -->
+            <a href="northamerica.html">
+                <g class="continent-group">
+                    <path class="continent-path"
+                        d="M780,90 C840,75 940,85 990,140 C980,190 940,250 900,270 C840,295 780,295 750,250 C730,200 740,130 780,90 Z" />
+                    <rect x="745" y="145" width="130" height="28" rx="14" fill="#ef4444" class="continent-label-bg" />
+                    <text x="810" y="164" class="continent-label-text" text-anchor="middle">NORTH AMERICA</text>
+                    <text x="820" y="120" class="map-icon">🗽</text>
+                    <text x="900" y="120" class="map-icon">🐻</text>
+                    <text x="950" y="230" class="map-icon">🐊</text>
+                    <text x="840" y="250" class="map-icon">🌵</text>
+                    <image x="960" y="120" width="42" height="28" href="https://flagcdn.com/w80/us.png"
+                        class="flag-img" />
+                    <image x="860" y="80" width="42" height="28" href="https://flagcdn.com/w80/ca.png"
+                        class="flag-img" />
+                    <text x="950" y="170" class="map-icon">🍔</text>
+                </g>
+            </a>
+
+            <!-- SOUTH AMERICA -->
+            <a href="southamerica.html">
+                <g class="continent-group">
+                    <path class="continent-path"
+                        d="M860,310 C920,310 980,320 990,340 C1000,390 990,490 960,570 C920,590 880,590 850,560 C820,510 810,410 840,310 Z" />
+                    <rect x="830" y="385" width="130" height="28" rx="14" fill="#f59e0b" class="continent-label-bg" />
+                    <text x="895" y="404" class="continent-label-text" text-anchor="middle">SOUTH AMERICA</text>
+                    <text x="900" y="360" class="map-icon">🦜</text>
+                    <text x="960" y="370" class="map-icon">🐒</text>
+                    <text x="890" y="500" class="map-icon">💃</text>
+                    <text x="950" y="480" class="map-icon">🌮</text>
+                    <text x="870" y="540" class="map-icon">🐍</text>
+                    <image x="850" y="350" width="42" height="28" href="https://flagcdn.com/w80/br.png"
+                        class="flag-img" />
+                    <image x="980" y="430" width="42" height="28" href="https://flagcdn.com/w80/ar.png"
+                        class="flag-img" />
+                    <text x="920" y="560" class="map-icon">🗿</text>
+                </g>
+            </a>
+        </svg>
+    </div>
+</body>
+
+</html>
